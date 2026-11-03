@@ -22,3 +22,14 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
+/target/
+
+
+# Full datasets - keep locally, not on GitHub
+/data/articles.csv
+/data/articles.json
+
+# Eclipse-specific generated configuration
+/.classpath
+/.project
+/.settings/
