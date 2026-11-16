@@ -13,27 +13,24 @@ import java.util.SortedMap;
  * The processor package depends only on this interface, never on the
  * concrete parsers, HashMap index, Trie or TreeMap behind it.
  *
- * <p>Shared rules for every implementation:
- * <ul>
- *   <li><b>Tokenizing:</b> one shared rule for the index, the Trie and
+
+ *   - Tokenizing: one shared rule for the index, the Trie and
  *       the word counts: lower-case the text, split on any character that
  *       is not a letter or digit, then drop stop words (from
  *       stop_words.txt) and tokens of length 1. User input passed to these
- *       methods is tokenized with the same rule.</li>
- *   <li><b>Counts:</b> every count is a number of word occurrences, not a
- *       number of articles.</li>
- *   <li><b>Case:</b> every lookup is case-insensitive. Callers may pass
- *       input exactly as the user typed it.</li>
- *   <li><b>Never null:</b> methods return empty collections (or an empty
- *       {@link Optional}) instead of null when nothing matches.</li>
- *   <li><b>Read-only results:</b> callers must not modify returned
- *       collections; implementations may return unmodifiable views.</li>
- *   <li><b>No validation of user input here:</b> format checks (such as
+ *       methods is tokenized with the same rule.
+ *   - Counts: every count is a number of word occurrences, not a
+ *       number of articles.
+ *   - Case: every lookup is case-insensitive. Callers may pass
+ *       input exactly as the user typed it.
+ *   - Never null: methods return empty collections  instead of null when nothing matches.
+ *   - Read-only results: callers must not modify returned
+ *       collections; implementations may return unmodifiable views.
+ *   - No validation of user input here: format checks (such as
  *       "2024-13" or start after end) belong to the processor tier. By
- *       the time a method is called, its arguments are already valid.</li>
- * </ul>
+ *       the time a method is called, its arguments are already valid.
  *
- * <p>Loading is intentionally not part of this interface. Main creates the
+ * Loading is intentionally not part of this interface. Main creates the
  * concrete repository, calls its load method once at startup, and then
  * passes it to the processor as an {@code ArticleRepository}.
  */
@@ -46,7 +43,7 @@ public interface ArticleRepository {
     /**
      * Finds articles that contain all of the given keywords (AND).
      *
-     * <p>Matching uses the indexed keywords, so if any keyword is a stop
+     * Matching uses the indexed keywords, so if any keyword is a stop
      * word, or is a single character, the result is empty.
      *
      * @param keywords one or more search words, raw user input
@@ -79,7 +76,7 @@ public interface ArticleRepository {
      * Finds all articles published between two dates, inclusive.
      *
      * @param start first date, already validated
-     * @param end   last date, already validated, not before {@code start}
+     * @param end   last date, already validated, not before 
      * @return articles sorted chronologically (oldest first), with
      *         articles from the same date kept in load order; empty list
      *         if none fall in the range
@@ -93,7 +90,7 @@ public interface ArticleRepository {
     /**
      * Looks up one article by its unique ID (the "uri" field).
      *
-     * <p>If the data file repeats an ID, the first article loaded keeps
+     * If the data file repeats an ID, the first article loaded keeps
      * it and the duplicate is skipped with a logged warning.
      *
      * @param id the article ID, as a string
@@ -109,7 +106,7 @@ public interface ArticleRepository {
      * Returns the word frequencies for one month, counting words from both
      * titles and bodies, without stop words or 1-character tokens.
      *
-     * <p>The repository only supplies the counts. The processor tier puts
+     * The repository only supplies the counts. The processor tier puts
      * them into a Heap to pick the top 10 trending words.
      *
      * @param period the month, already validated
@@ -125,7 +122,7 @@ public interface ArticleRepository {
     /**
      * Returns how many times a topic word appears in each month of a range.
      *
-     * <p>If the topic is a stop word or a single character, every month's
+     * If the topic is a stop word or a single character, every month's
      * count is 0, because those words are never counted.
      *
      * @param topic the single word to track, raw user input
