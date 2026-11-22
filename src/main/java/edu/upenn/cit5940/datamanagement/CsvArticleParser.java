@@ -60,7 +60,7 @@ public class CsvArticleParser implements ArticleParser {
 			while ((row = reader.readNext()) != null) {
 				
 				//skip rows that are incomplete (mental note: need to handle incomplete ones later)
-				if (row.length < headers.length) {
+				if (row.length <= columns.get("uri") || row.length <= columns.get("date") ||row.length <= columns.get("title") || row.length <= columns.get("body") || row.length <= columns.get("url") ||row.length <= columns.get("source")) {
 					
 					continue;
 					
