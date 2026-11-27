@@ -10,6 +10,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
+import com.opencsv.CSVReaderBuilder;
+import com.opencsv.RFC4180Parser;
 
 import edu.upenn.cit5940.logging.AppLogger;
 
@@ -26,7 +28,7 @@ public class CsvArticleParser implements ArticleParser {
 		
 		
 		//File reading (Open the CSV)
-		try (CSVReader reader = new CSVReader(new FileReader(filePath))){
+		try (CSVReader reader = new CSVReaderBuilder(new FileReader(filePath)).withCSVParser(new RFC4180Parser()).build()){
 			
 			//find # of columns from first row
 			String[] headers = reader.readNext();
