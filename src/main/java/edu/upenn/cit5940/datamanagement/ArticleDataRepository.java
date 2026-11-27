@@ -67,7 +67,7 @@ public class ArticleDataRepository implements ArticleRepository {
 		
 		//build trie
 		wordSuggestions = new CustomTrie();
-		wordSuggestions.addArticleWords(loadedArticles);;
+		wordSuggestions.addArticleWords(loadedArticles, stopWords);;
 		
 		//put articles into order based on date
 		dateIndex = new ArticleDateIndex();

@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import edu.upenn.cit5940.logging.AppLogger;
+
 import edu.upenn.cit5940.common.dto.Article;
 
 public class ArticleLoader {
@@ -55,6 +57,9 @@ public class ArticleLoader {
 
                 //Add the article to our final list
                 uniqueArticles.add(article);
+            } else {
+            	//Keep the first article and log the repeated ID
+                AppLogger.getInstance().warn("Skipping duplicate article " + id + " in " + filePath);
             }
         }
 

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Collections;
 import edu.upenn.cit5940.common.dto.Article;
 import java.io.IOException;
+import java.util.Set;
+import java.time.LocalDate;
 
 public class CustomTrie {
 
@@ -226,8 +228,14 @@ public class CustomTrie {
         }
     }
     
-    //Add words from article titles and bodies
+    
+    //Let examples run without stopwords
     public void addArticleWords(List<Article> articles) {
+    	addArticleWords(articles, Collections.emptySet());
+    }
+    
+    //Add words from article titles and bodies
+    public void addArticleWords(List<Article> articles, Set<String> wordsToSkip) {
 
         //Go through each article
         for (Article currentArticle : articles) {
@@ -241,12 +249,19 @@ public class CustomTrie {
             //Split the text into separate words
             String[] wordsInArticle = articleText.split("[^a-z0-9]+");
 
-            //Add each word to our Trie
+            //leave out empty pieces/single letters
             for (String currentWord : wordsInArticle) {
+            	
+            	if (currentWord.length() <= 1) {
+            		continue;
+            	}
 
-                if (!currentWord.isEmpty()) {
-                    insertWord(currentWord);
+                if (wordsToSkip.contains(currentWord)) {
+                    continue;
                 }
+                
+                //add the word if passes both checks
+                insertWord(currentWord);
             }
         }
     }

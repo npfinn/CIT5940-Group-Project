@@ -14,6 +14,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import edu.upenn.cit5940.common.dto.Article;
 
+import edu.upenn.cit5940.logging.AppLogger;
+
 public class JsonArticleParser implements ArticleParser {
 	
 	@Override
@@ -79,11 +81,16 @@ public class JsonArticleParser implements ArticleParser {
 			
 					articles.add(article);
 				} catch (DateTimeParseException e) {
-				
 					
-					
+					//Log the bad date before moving to the next article
+					AppLogger.getInstance().warn("Skipping JSON article " + id + " in " + filePath + ": invalid date " + dateText);	
 				}
+				
+				
 			
+			} else {
+				 //Log articles with missing or blank fields
+			    AppLogger.getInstance().warn("Skipping JSON article " + id + " in " + filePath + ": required field is missing or blank");
 			}
 			
 			}

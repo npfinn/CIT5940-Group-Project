@@ -11,6 +11,8 @@ import java.util.Map;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+import edu.upenn.cit5940.logging.AppLogger;
+
 public class CsvArticleParser implements ArticleParser {
     
 	
@@ -62,6 +64,7 @@ public class CsvArticleParser implements ArticleParser {
 				//skip rows that are incomplete (mental note: need to handle incomplete ones later)
 				if (row.length <= columns.get("uri") || row.length <= columns.get("date") ||row.length <= columns.get("title") || row.length <= columns.get("body") || row.length <= columns.get("url") ||row.length <= columns.get("source")) {
 					
+					AppLogger.getInstance().warn("Skipping CSV record in " + filePath + ": not enough columns");
 					continue;
 					
 				}
@@ -78,6 +81,8 @@ public class CsvArticleParser implements ArticleParser {
 				
 				//Skip article if any info is missing
 				if (id == null || id.isBlank() || dateText == null || dateText.isBlank() || title == null || title.isBlank() || body == null || body.isBlank() || url == null || url.isBlank() || source == null || source.isBlank()) {
+					
+					AppLogger.getInstance().warn("Skipping CSV article " + id + " in " + filePath + ": required field is blank");
 					continue;
 				}
 				
@@ -95,6 +100,8 @@ public class CsvArticleParser implements ArticleParser {
 					articles.add(article);
 				} catch (DateTimeParseException e) {
 					
+					//log bad date before skipping
+					 AppLogger.getInstance().warn("Skipping CSV article " + id + " in " + filePath + ": invalid date " + dateText);
 					//move to next article if we have a bad date
 					continue;
 				}
