@@ -81,7 +81,9 @@ class ConsoleUITest {
                 new PrintStream(buf, true, StandardCharsets.UTF_8));
         ui.showStartup("data/test.csv");
         ui.run();
-        return buf.toString(StandardCharsets.UTF_8).toLowerCase(Locale.ROOT);
+        
+        //this was failing because windows adds \r\n, so added \n to match your checks
+        return buf.toString(StandardCharsets.UTF_8).replace("\r\n", "\n").toLowerCase(Locale.ROOT);
     }
 
     private void has(String out, String... words) {
