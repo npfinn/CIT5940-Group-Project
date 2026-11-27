@@ -32,7 +32,7 @@ public class SearchEngineService {
         this.repository = repository;
     }
 
-    // @return number of articles successfully loaded 
+    /** @return number of articles successfully loaded */
     public int getArticleCount() {
         return repository.getTotalArticleCount();
     }
@@ -100,12 +100,12 @@ public class SearchEngineService {
     }
 
     /**
-     * Finds the top trending words for one month (titles and bodies, no stop words).
+     * finds the top trending words for one month (titles and bodies, no stop words
      *
-     * Uses a min-heap capped at {@link #TOP_TOPICS} entries: each word is pushed,
+     * uses a min-heap capped at top topic entries: each word is pushed,
      * and when the heap grows past the cap the weakest entry (smallest count) is
-     * dropped, so only the best candidates are kept. This is O(n log k) for n
-     * distinct words, instead of sorting all n.
+     * dropped, so only the best candidates are kept; O(n log k) for n
+     * distinct words, instead of sorting all n
      *
      * @param periodText month typed by the user (YYYY-MM)
      * @return up to 10 words, highest count first; ties broken alphabetically
@@ -138,7 +138,7 @@ public class SearchEngineService {
     }
 
     /**
-     * Monthly frequency of one topic word across an inclusive range of months.
+     * monthly frequency of one topic word across an inclusive range of months
      *
      * @param topic     a single word, as typed
      * @param startText first month (YYYY-MM)
