@@ -40,19 +40,19 @@ class MainTest {
     @Test
     void usesGivenDataAndLogPaths() throws Exception {
         Path log = tempDir.resolve("run.log");
-        String out = runMain("4\n", "my/data.csv", log.toString());
+        String out = runMain("4\n", "data/articles_small.csv", log.toString());
 
-        assertTrue(out.contains("Loading articles from: my/data.csv"), out);
+        assertTrue(out.contains("Loading articles from: data/articles_small.csv"), out);
         assertTrue(out.contains("Goodbye!"), out);
         String logText = Files.readString(log);
         assertTrue(logText.contains("Application starting"), logText);
-        assertTrue(logText.contains("Loaded 5 articles from my/data.csv"), logText);
+        assertTrue(logText.contains("Loaded 100 articles from data/articles_small.csv"), logText);
         assertTrue(logText.contains("Application exiting"), logText);
     }
 
     @Test
     void logsNothingToConsole() {
-        String out = runMain("4\n", "d.csv", tempDir.resolve("q.log").toString());
+        String out = runMain("4\n", "data/articles_small.csv", tempDir.resolve("q.log").toString());
         assertTrue(!out.contains("INFO") && !out.contains("ERROR"), out);
     }
 }

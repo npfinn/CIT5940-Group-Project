@@ -1,10 +1,14 @@
 package edu.upenn.cit5940;
 
+import edu.upenn.cit5940.datamanagement.ArticleDataRepository;
+import edu.upenn.cit5940.datamanagement.ArticleLoader;
 import edu.upenn.cit5940.datamanagement.ArticleRepository;
-import edu.upenn.cit5940.datamanagement.StubArticleRepository;
+import edu.upenn.cit5940.datamanagement.StopWordLoader;
+
 import edu.upenn.cit5940.logging.AppLogger;
 import edu.upenn.cit5940.processor.SearchEngineService;
 import edu.upenn.cit5940.ui.ConsoleUI;
+import java.io.IOException;
 
 /**
  * Program entry point and composition root.
@@ -19,7 +23,7 @@ import edu.upenn.cit5940.ui.ConsoleUI;
  */
 public class Main {
     // data file used when no first argument is given
-    private static final String DEFAULT_DATA_FILE = "data/articles.csv";
+    private static final String DEFAULT_DATA_FILE = "data/articles_small.csv";
     // log file used when no second argument is given
     private static final String DEFAULT_LOG_FILE = "tech_news_search.log";
 
@@ -34,7 +38,29 @@ public class Main {
 
         // 3. Build the data tier. The real repository will parse and index dataPath here.
         // TODO: replace the stub with the real repository that loads dataPath
-        ArticleRepository repository = new StubArticleRepository();
+        ArticleRepository repository;
+        
+        try {
+        	ArticleLoader articleLoader = new ArticleLoader();
+            StopWordLoader stopWordLoader = new StopWordLoader();
+            
+            repository = new ArticleDataRepository(articleLoader.load(dataPath), stopWordLoader.load("data/stop_words.txt"));
+            
+        }  catch (IOException | IllegalArgumentException e) {
+        	
+        	//Stop before opening the menu if either file couldnt load
+            AppLogger.getInstance().error("Could not load article data", e);
+            System.out.println("Could not load article data: " + e.getMessage());
+            AppLogger.getInstance().close();
+        	
+        	return;
+        }
+        
+        
+        
+        
+        
+        
         AppLogger.getInstance().info("Loaded " + repository.getTotalArticleCount()
                 + " articles from " + dataPath);
 
